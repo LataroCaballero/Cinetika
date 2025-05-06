@@ -1,5 +1,5 @@
 import { useApp } from "../utilities/Context"
-import logo from "../../../public/favicon.ico"
+import logo from "../assets/vite.svg"
 
 
 

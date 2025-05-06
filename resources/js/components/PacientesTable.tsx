@@ -1,7 +1,6 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import { PacienteType } from "../utilities/Types";
-import { useApp } from "../utilities/Context";
 
 type PacientesProps = {
     pacientes : PacienteType[]
@@ -10,16 +9,11 @@ type PacientesProps = {
 const PacientesTable = (pacientesprops:PacientesProps) => {
 
   const {pacientes} = pacientesprops
-  const {setPagina} = useApp()
+
+  
   const navigate = useNavigate();
   
   useEffect(()=>{
-    setPagina("Pacientes")
-    //todo: get pacientes
-  })
-
-  useEffect(()=>{
-    
   },[pacientes])
 
   return (
@@ -39,12 +33,12 @@ const PacientesTable = (pacientesprops:PacientesProps) => {
               {pacientes.map(
                 (paciente)=>{
                   return(
-                        <tr onClick={() => navigate(`/paciente/${paciente.id}`)}>
+                        <tr key={paciente.id} onClick={() => navigate(`/paciente/${paciente.id}`)}>
                           <td>{paciente.id}</td>
                           <td>{paciente.nombre}</td>
                           <td>{paciente.apellido}</td>
                           <td>{paciente.dni}</td>
-                          <td>{paciente.id}</td>
+                          <td>{paciente.grupo}</td>
                         </tr>
                         )
                             }
