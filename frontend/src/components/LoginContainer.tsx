@@ -1,8 +1,10 @@
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
-import "../../css/styles.css"
+import "../assets/styles.css"
 import { useApp } from "../utilities/Context"
 import { useEffect } from "react"
+
+
 
 type Register = {
     usuario: string,
@@ -15,9 +17,11 @@ const LoginContainer = () => {
     const navigate = useNavigate()
     const {setPagina} = useApp()
 
-    const enviar = (data:Register) => {
+    const enviar = async (data:Register) => {
         console.log(data)
         //To do: logica inicio de sesion
+        
+        
         navigate("/pacientes")
     }
 
@@ -36,7 +40,6 @@ const LoginContainer = () => {
                 <label>Contraseña</label>
                 <input type="password" className="form-control w-100" placeholder="Contraseña" {...register("contraseña")}/>
             </div>
-
             <button type="submit" className="btn btn-secondary w-100 mt-5">Continuar</button>
         </form>
     </div>

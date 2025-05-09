@@ -1,0 +1,18 @@
+.navbar.nav-custom{
+    background-color: #6e6e6c;
+}
+
+.navbar.nav-custom .navbar-brand {
+    color: #ffffff;  
+  }
+
+
+.basic-container {
+    background-color: #f6f1f1; 
+    width: 500px;       
+    height: 400px;
+    border: 1px solid #555;
+    display: flex;
+    flex-direction: column;
+}
+

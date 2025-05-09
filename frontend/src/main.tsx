@@ -8,11 +8,11 @@ import { AppProvider } from './utilities/Context';
 
 
 
-createRoot(document.getElementById('app')!).render(
+createRoot(document.getElementById('root')!).render(
   <AppProvider>
     <StrictMode>
       <RouterProvider router={router}/>
-    </StrictMode>,
+    </StrictMode>
   </AppProvider>
   
 )

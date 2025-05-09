@@ -19,15 +19,15 @@ const router = createBrowserRouter([
             },
             {
                 path: '/pacientes',
-                element: <PacientesContainer />,
+                element: <PacientesContainer/>,
             },
             {
                 path: 'paciente/nuevo',
-                element:<PacienteForm/>
+                element:<PacienteForm/>,
             },
             {
                 path: '/paciente/:id',
-                element: <Paciente/>
+                element: <Paciente/>,
             }
             
         ],
