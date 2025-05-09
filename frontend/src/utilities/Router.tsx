@@ -3,7 +3,7 @@ import LoginContainer from '../components/LoginContainer';
 import PacientesContainer from '../components/PacientesContainer';
 import Layout from '../components/Layout';
 import Paciente from '../components/Paciente';
-import PacienteForm from '../components/PacienteForm';
+import PacienteForm from '../components/NuevoPacienteForm';
 
 
 
