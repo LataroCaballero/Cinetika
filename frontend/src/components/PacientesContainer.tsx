@@ -7,12 +7,15 @@ import { pacientesService } from "../utilities/api";
 
 
 const PacientesContainer = () => {
-  const [query, setQuery] = useState<string>('')
+  
   const navigator = useNavigate()
   const {setPagina} = useApp()
   const [pacientesData, setPacientesData] = useState<PacienteType[]>([])
   const [listadoPacientes, setListadoPacientes] = useState<PacienteType[]>([])
-
+  const [queryDni, setQueryDni] = useState<string>('')
+  const [queryGrupo, setQueryGrupo] = useState<string>('')
+  const [grupos, setGrupos] = useState<Set<string>>(new Set())
+  
   const fetchPacientes = async ():Promise<PacienteType[]>=>{
     const respuesta = await pacientesService.getAll()
     return respuesta.data
@@ -27,9 +30,18 @@ const PacientesContainer = () => {
         const respuesta = await fetchPacientes();
         setPacientesData(respuesta)
         setListadoPacientes(respuesta)
+        let grupos_temp = new Set<string>()
+        
+        respuesta.forEach(paciente => {
+          if(paciente.grupo){
+            grupos_temp.add(paciente.grupo)
+          }
+        })
+        console.log(grupos_temp)
+        setGrupos(grupos_temp)
       } catch (error) {
-        console.error("Error al obtener pacientes:", error);
-        setListadoPacientes([]);
+        console.error("Error al obtener pacientes:", error)
+        setListadoPacientes([])
       }
     }
 
@@ -40,9 +52,19 @@ const PacientesContainer = () => {
     if (!pacientesData) return
    
     let listadoPacientesFiltrados:PacienteType[]
-    query=='' ? listadoPacientesFiltrados = pacientesData : listadoPacientesFiltrados = pacientesData.filter((elemento) => elemento.dni.startsWith(query)) 
+
+    if (queryDni != '' || queryGrupo !=''){
+      listadoPacientesFiltrados = pacientesData.filter((elemento) => elemento.dni.startsWith(queryDni))
+      listadoPacientesFiltrados = listadoPacientesFiltrados.filter((elemento) => elemento.grupo?.startsWith(queryGrupo))
+    }else{
+      listadoPacientesFiltrados = pacientesData
+    }
+    
+    
     setListadoPacientes(listadoPacientesFiltrados)
-  },[query])
+  },[queryDni,queryGrupo])
+
+ 
 
 
   return (
@@ -50,7 +72,13 @@ const PacientesContainer = () => {
         <div className="row justify-content-center">
           <div className="col-md-3 d-flex flex-column gap-3  ">
               <label>DNI</label>
-              <input type="text" className="form-control" autoComplete="off" placeholder="DNI" onChange={(e) => setQuery(e.target.value)}/>
+              <input type="text" className="form-control" autoComplete="off" placeholder="DNI" onChange={(e) => setQueryDni(e.target.value)}/>
+              <label>Grupo</label>
+              <select onChange={(e)=> setQueryGrupo(e.target.value)}>
+                <option key={"ninguno"} value={''}>Ninguno</option>
+                {[...grupos].map((grupo)=>
+                <option key={grupo} value={grupo}>{grupo}</option>)}
+              </select>
               <button className="btn btn-secondary mt-3 w-100" onClick={() => navigator('/paciente/nuevo')}>Cargar Paciente</button>
           </div>
           <div className="col-md-7">
