@@ -37,7 +37,7 @@ const PacientesContainer = () => {
             grupos_temp.add(paciente.grupo)
           }
         })
-        console.log(grupos_temp)
+        
         setGrupos(grupos_temp)
       } catch (error) {
         console.error("Error al obtener pacientes:", error)

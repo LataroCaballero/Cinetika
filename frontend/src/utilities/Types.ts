@@ -19,7 +19,7 @@ export type HitoType = {
     descripcion:string,
     patologia:string,
     fecha:string,
-    mediciones:MedicionType[],
+    mediciones?:MedicionType[],
     created_at?: string,
     updated_at?: string,
 }

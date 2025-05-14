@@ -4,6 +4,7 @@ import PacientesContainer from '../components/PacientesContainer';
 import Layout from '../components/Layout';
 import Paciente from '../components/Paciente';
 import PacienteForm from '../components/NuevoPacienteForm';
+import HitoContainer from '../components/HitoContainer';
 
 
 
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
             {
                 path: '/paciente/:id',
                 element: <Paciente/>,
+            },
+            {
+                path:'/hito/:id',
+                element: <HitoContainer/>
             }
             
         ],
