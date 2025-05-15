@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Route;
 Route::apiResource('pacientes', PacienteController::class);
 Route::get('pacientes/{paciente}/historial-completo', [PacienteController::class, 'historialCompleto']);
 Route::get('pacientes', [PacienteController::class, 'index']);
+Route::post('pacientes', [PacienteController::class, 'store']);
+Route::put('pacientes', [PacienteController::class, 'update']);
+Route::delete('pacientes', [PacienteController::class, 'destroy']);
 
 // Rutas para Hitos (anidadas con pacientes)
 Route::get('pacientes/{paciente}/hitos', [HitoController::class, 'index']);
@@ -31,12 +34,6 @@ Route::get('mediciones/{medicion}', [MedicionController::class, 'show']);
 Route::put('mediciones/{medicion}', [MedicionController::class, 'update']);
 Route::delete('mediciones/{medicion}', [MedicionController::class, 'destroy']);
 
-// Rutas para Repeticiones (anidadas con mediciones)
-Route::get('mediciones/{medicion}/repeticiones', [RepeticionController::class, 'index']);
-Route::post('mediciones/{medicion}/repeticiones', [RepeticionController::class, 'store']);
-Route::get('repeticiones/{repeticion}', [RepeticionController::class, 'show']);
-Route::put('repeticiones/{repeticion}', [RepeticionController::class, 'update']);
-Route::delete('repeticiones/{repeticion}', [RepeticionController::class, 'destroy']); 
 
 Route::get('/test', function () {
     return response()->json(['message' => 'API funcionando']);

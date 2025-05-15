@@ -13,7 +13,7 @@ return new class extends Migration
             $table->foreignId('id_hito')->constrained('hitos', 'id_hito')->onDelete('cascade');
             $table->date('fecha');
             $table->enum('tipo_medicion', ['tipo1', 'tipo2', 'tipo3']);
-            $table->json('metricas');
+            $table->string('ruta_archivo_medicion')->nullable();
             $table->timestamps();
         });
     }

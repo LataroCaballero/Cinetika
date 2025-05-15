@@ -70,7 +70,6 @@ class PacienteController extends Controller
         $historial = $paciente->load([
             'hitos',
             'hitos.mediciones',
-            'hitos.mediciones.repeticiones'
         ]);
         
         return response()->json($historial);

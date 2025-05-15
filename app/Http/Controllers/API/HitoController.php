@@ -36,7 +36,7 @@ class HitoController extends Controller
 
     public function show(Hito $hito): JsonResponse
     {
-        return response()->json($hito->load(['mediciones.repeticiones']));
+        return response()->json($hito->load(['mediciones']));
     }
 
     public function update(Request $request, Hito $hito): JsonResponse

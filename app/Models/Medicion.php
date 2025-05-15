@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use \PhpOffice\PhpSpreadsheet\Reader\Csv;
 
 class Medicion extends Model
 {
@@ -17,12 +18,11 @@ class Medicion extends Model
         'id_hito',
         'fecha',
         'tipo_medicion',
-        'metricas'
+        'ruta_archivo_medicion'
     ];
 
     protected $casts = [
         'fecha' => 'date',
-        'metricas' => 'array'
     ];
 
     public function hito(): BelongsTo
@@ -30,8 +30,16 @@ class Medicion extends Model
         return $this->belongsTo(Hito::class, 'id_hito');
     }
 
-    public function repeticiones(): HasMany
-    {
-        return $this->hasMany(Repeticion::class, 'id_medicion');
+    public function show(): array{
+        $reader = new Csv();
+        $reader->setDelimiter(',');
+        $reader->setEnclosure('"');
+        $spreadsheet = $reader->load($this->ruta_archivo_medicion);
+        $data = [
+            $this->fecha,
+            $this->tipo_medicion,
+            $spreadsheet->getActiveSheet()->toArray()
+        ];
+        return $data;
     }
 } 
