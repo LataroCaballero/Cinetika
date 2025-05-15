@@ -30,15 +30,17 @@ const PacientesContainer = () => {
         const respuesta = await fetchPacientes();
         setPacientesData(respuesta)
         setListadoPacientes(respuesta)
-        let grupos_temp = new Set<string>()
+        let grupos_temp:string[] = []
         
         respuesta.forEach(paciente => {
           if(paciente.grupo){
-            grupos_temp.add(paciente.grupo)
+            grupos_temp.push(paciente.grupo)
           }
         })
+        grupos_temp.sort()
         
-        setGrupos(grupos_temp)
+
+        setGrupos(new Set<string>(grupos_temp))
       } catch (error) {
         console.error("Error al obtener pacientes:", error)
         setListadoPacientes([])

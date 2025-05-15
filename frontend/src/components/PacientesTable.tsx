@@ -17,7 +17,7 @@ const PacientesTable = (pacientesprops:PacientesProps) => {
   },[pacientes])
 
   return (
-    <div className="p-3">
+    <div className="p-3" style={{ maxHeight: '800px', overflowY: 'auto' }}>
         <table className="table table-hover table-bordered">
             <thead className="table-light">
                 <tr>
