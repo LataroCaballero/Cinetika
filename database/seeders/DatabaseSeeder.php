@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Crear 5 pacientes
-        Paciente::factory(5)->create()->each(function ($paciente) {
+        Paciente::factory(20)->create()->each(function ($paciente) {
             // Para cada paciente, crear 2 hitos
             Hito::factory(2)->create(['id_paciente' => $paciente->id_paciente])->each(function ($hito) {
                 // Para cada hito, crear 3 mediciones

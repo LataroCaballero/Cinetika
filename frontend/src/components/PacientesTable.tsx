@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useNavigate } from "react-router-dom";
-import { PacienteType } from "../utilities/Types";
+import type { PacienteType } from "../utilities/Types";
 
 type PacientesProps = {
     pacientes : PacienteType[]
@@ -17,13 +17,12 @@ const PacientesTable = (pacientesprops:PacientesProps) => {
   },[pacientes])
 
   return (
-    <div className="p-3">
+    <div className="p-3" style={{ maxHeight: '800px', overflowY: 'auto' }}>
         <table className="table table-hover table-bordered">
             <thead className="table-light">
                 <tr>
                 <th scope="col">#</th>
-                <th scope="col">Nombre</th>
-                <th scope="col">Apellido</th>
+                <th scope="col">Nombre y Apellido</th>
                 <th scope="col">Dni</th>
                 <th scope="col">Grupo</th>
                 </tr>
@@ -33,10 +32,9 @@ const PacientesTable = (pacientesprops:PacientesProps) => {
               {pacientes.map(
                 (paciente)=>{
                   return(
-                        <tr key={paciente.id} onClick={() => navigate(`/paciente/${paciente.id}`)}>
-                          <td>{paciente.id}</td>
-                          <td>{paciente.nombre}</td>
-                          <td>{paciente.apellido}</td>
+                        <tr key={paciente.id_paciente} onClick={() => navigate(`/paciente/${paciente.id_paciente}`)}>
+                          <td>{paciente.id_paciente}</td>
+                          <td>{paciente.nombre_apellido}</td>
                           <td>{paciente.dni}</td>
                           <td>{paciente.grupo}</td>
                         </tr>

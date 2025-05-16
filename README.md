@@ -18,3 +18,9 @@ Ejecutar los siguientes comandos
 
 Para ejecutar el servidor
 - php artisan serve
+
+Frontend: 
+dentro de la carpeta frotnend
+- npm install
+para correr servidor
+- npm run dev
