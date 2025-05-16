@@ -1,24 +1,23 @@
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
-import type { PacienteType } from '../utilities/Types';
+import type { HitoType, PacienteType } from '../utilities/Types';
 import { useApp } from '../utilities/Context';
 import { useEffect, useState } from 'react';
 import { pacientesService } from '../utilities/api';
 import '../assets/styles.css'
-import { Popover } from 'react-bootstrap';
+import { OverlayTrigger, Popover } from 'react-bootstrap';
 
 
-type DataParaGrafico = {
-  name: string,
-  values: number[]
-}
+
+
 
 
 const Paciente = () => {
   const [paciente, setPaciente] = useState<PacienteType | undefined>(undefined)
+  const [hitos, setHitos] = useState<HitoType[] | undefined>(undefined)
   const { id } = useParams();
   const { setPagina } = useApp()
   const navigate = useNavigate()
-  const valoresGrafico: DataParaGrafico[] = []
+ 
 
 
   if (isNaN(Number(id))) {
@@ -39,6 +38,7 @@ const Paciente = () => {
 
 
 
+
   useEffect(() => {
     setPagina('Paciente')
 
@@ -47,27 +47,9 @@ const Paciente = () => {
         const data = await fetchPaciente()
         setPaciente(data)
 
-        // if(data.hitos){
-        //   data.hitos.forEach(hito => {
+        let tempHitos = data.hitos
 
-        //     if(!hito.mediciones){
-        //       return
-        //     }
-
-        //     let mediciones = hito.mediciones
-
-        //     mediciones.forEach(medicion => {
-        //       const indice = valoresGrafico.findIndex((elemento) => elemento.name == medicion.tipo_medicion)
-        //       const repTemp = []
-        //       medicion.repeticiones.forEach(repeticion => {
-        //         repTemp.push()
-        //       });
-
-        //     });
-
-
-        //   });
-        // }
+       if (tempHitos) setHitos(tempHitos.sort((hito1,hito2)=> new Date(hito1.fecha).getTime() - new Date(hito2.fecha).getTime()))
 
       } catch (error) {
         console.log(error)
@@ -118,11 +100,20 @@ const Paciente = () => {
       <div className="container mt-5">
         <div className="timeline">
           <div className="timeline-row">
-            {paciente.hitos?.map((hito) => {
+
+            {hitos?.map((hito) => {
               return (
-                <div className="timeline-event" data-toggle="popover" title={hito.fecha} data-content={hito.descripcion} onClick={()=>navigate(`/hito/${hito.id_hito}`)}>
-                  <div className="timeline-marker"></div>
-                </div>
+                <OverlayTrigger
+                  trigger={"hover"}
+                  placement='top'
+                  overlay={renderPopover(hito.fecha, hito.descripcion)}
+                >
+                  <div className="timeline-event" data-toggle="popover" title={hito.fecha} data-content={hito.descripcion} onClick={() => navigate(`/hito/${hito.id_hito}`)}>
+                    <div className="timeline-marker"></div>
+                  </div>
+
+                </OverlayTrigger>
+
               )
 
             })}
