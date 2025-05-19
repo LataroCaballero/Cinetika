@@ -7,40 +7,42 @@ import { pacientesService } from "../utilities/api";
 
 
 const PacientesContainer = () => {
-  
+
   const navigator = useNavigate()
-  const {setPagina} = useApp()
+  const { setPagina } = useApp()
   const [pacientesData, setPacientesData] = useState<PacienteType[]>([])
   const [listadoPacientes, setListadoPacientes] = useState<PacienteType[]>([])
+  const [tablaCargada, setTablaCargada] = useState<boolean>(false)
   const [queryDni, setQueryDni] = useState<string>('')
   const [queryGrupo, setQueryGrupo] = useState<string>('')
   const [grupos, setGrupos] = useState<Set<string>>(new Set())
-  
-  const fetchPacientes = async ():Promise<PacienteType[]>=>{
+
+  const fetchPacientes = async (): Promise<PacienteType[]> => {
     const respuesta = await pacientesService.getAll()
     return respuesta.data
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     setPagina("Pacientes")
-    
+
 
     const obtenerPacientes = async () => {
       try {
         const respuesta = await fetchPacientes();
         setPacientesData(respuesta)
         setListadoPacientes(respuesta)
-        let grupos_temp:string[] = []
-        
+        let grupos_temp: string[] = []
+
         respuesta.forEach(paciente => {
-          if(paciente.grupo){
+          if (paciente.grupo) {
             grupos_temp.push(paciente.grupo)
           }
         })
         grupos_temp.sort()
-        
+
 
         setGrupos(new Set<string>(grupos_temp))
+        setTablaCargada(true)
       } catch (error) {
         console.error("Error al obtener pacientes:", error)
         setListadoPacientes([])
@@ -48,45 +50,54 @@ const PacientesContainer = () => {
     }
 
     obtenerPacientes();
-  },[])
+  }, [])
 
-  useEffect(()=>{
+  useEffect(() => {
     if (!pacientesData) return
-   
-    let listadoPacientesFiltrados:PacienteType[]
 
-    if (queryDni != '' || queryGrupo !=''){
+    let listadoPacientesFiltrados: PacienteType[]
+
+    if (queryDni != '' || queryGrupo != '') {
       listadoPacientesFiltrados = pacientesData.filter((elemento) => elemento.dni.startsWith(queryDni))
       listadoPacientesFiltrados = listadoPacientesFiltrados.filter((elemento) => elemento.grupo?.startsWith(queryGrupo))
-    }else{
+    } else {
       listadoPacientesFiltrados = pacientesData
     }
-    
-    
-    setListadoPacientes(listadoPacientesFiltrados)
-  },[queryDni,queryGrupo])
 
- 
+
+    setListadoPacientes(listadoPacientesFiltrados)
+  }, [queryDni, queryGrupo])
+
+
 
 
   return (
     <div className="container-fluid mt-4 ">
-        <div className="row justify-content-center">
-          <div className="col-md-3 d-flex flex-column gap-3  ">
-              <label>DNI</label>
-              <input type="text" className="form-control" autoComplete="off" placeholder="DNI" onChange={(e) => setQueryDni(e.target.value)}/>
-              <label>Grupo</label>
-              <select onChange={(e)=> setQueryGrupo(e.target.value)}>
-                <option key={"ninguno"} value={''}>Ninguno</option>
-                {[...grupos].map((grupo)=>
-                <option key={grupo} value={grupo}>{grupo}</option>)}
-              </select>
-              <button className="btn btn-secondary mt-3 w-100" onClick={() => navigator('/paciente/nuevo')}>Cargar Paciente</button>
-          </div>
-          <div className="col-md-7">
-            <PacientesTable pacientes={listadoPacientes}/>
-          </div>
+      <div className="row justify-content-center">
+        <div className="col-md-3 d-flex flex-column gap-3  ">
+          <label>DNI</label>
+          <input type="text" className="form-control" autoComplete="off" placeholder="DNI" onChange={(e) => setQueryDni(e.target.value)} />
+          <label>Grupo</label>
+          <select onChange={(e) => setQueryGrupo(e.target.value)}>
+            <option key={"ninguno"} value={''}>Ninguno</option>
+            {[...grupos].map((grupo) =>
+              <option key={grupo} value={grupo}>{grupo}</option>)}
+          </select>
+          <button className="btn btn-secondary mt-3 w-100" onClick={() => navigator('/paciente/nuevo')}>Cargar Paciente</button>
         </div>
+
+        <div className="col-md-7 position-relative " style={{ minHeight: '150px' }}>
+          {!tablaCargada ?
+            (<div className="position-absolute top-50 start-50 translate-middle">
+              <div className="spinner-border text-secondary" role="status" />
+            </div>) :
+            (<PacientesTable pacientes={listadoPacientes} />)
+
+
+          }
+
+        </div>
+      </div>
     </div>
   )
 }
