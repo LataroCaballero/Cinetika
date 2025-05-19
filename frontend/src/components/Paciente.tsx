@@ -1,4 +1,4 @@
-import { Navigate, useNavigate, useParams } from 'react-router-dom'
+import { data, Navigate, useNavigate, useParams } from 'react-router-dom'
 import type { HitoType, PacienteType } from '../utilities/Types';
 import { useApp } from '../utilities/Context';
 import { useEffect, useState } from 'react';
@@ -7,17 +7,25 @@ import '../assets/styles.css'
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 
 
-
-
+type MedicionesParaGrafico = {
+  [tipo_medicion: string]: {
+    metricas: { fecha: string, valores: Record<string, number> }[],
+  }
+}
 
 
 const Paciente = () => {
   const [paciente, setPaciente] = useState<PacienteType | undefined>(undefined)
   const [hitos, setHitos] = useState<HitoType[] | undefined>(undefined)
+  const [dataGrafico, setDataParaGrafico] = useState<MedicionesParaGrafico>()
+  const [queryTipoMedicion,setQueryTipoMedicion] = useState<string>("")
+  const [queryTipoMetrica,setQueryTipoMetrica] = useState<string>("")
+
+
   const { id } = useParams();
   const { setPagina } = useApp()
   const navigate = useNavigate()
- 
+
 
 
   if (isNaN(Number(id))) {
@@ -49,7 +57,32 @@ const Paciente = () => {
 
         let tempHitos = data.hitos
 
-       if (tempHitos) setHitos(tempHitos.sort((hito1,hito2)=> new Date(hito1.fecha).getTime() - new Date(hito2.fecha).getTime()))
+        if (!tempHitos) return;
+
+        setHitos(tempHitos.sort((hito1, hito2) => new Date(hito1.fecha).getTime() - new Date(hito2.fecha).getTime()))
+
+
+
+        let medicionesGrafico: MedicionesParaGrafico = {}
+        tempHitos.forEach(hito => {
+          hito.mediciones?.forEach(medicion => {
+            if (!medicionesGrafico[medicion.tipo_medicion]) {
+              medicionesGrafico[medicion.tipo_medicion] = {
+                metricas: [{ fecha: medicion.fecha, valores: medicion.metricas }]
+              };
+            }
+            else {
+              medicionesGrafico[medicion.tipo_medicion].metricas.push({ fecha: medicion.fecha, valores: medicion.metricas })
+            }
+          });
+        });
+
+        for (const hito in medicionesGrafico) {
+          medicionesGrafico[hito].metricas.sort((metrica1, metrica2) => new Date(metrica1.fecha).getTime() - new Date(metrica2.fecha).getTime())
+        }
+
+        console.log(medicionesGrafico)
+        setDataParaGrafico(medicionesGrafico)
 
       } catch (error) {
         console.log(error)
@@ -72,7 +105,7 @@ const Paciente = () => {
 
   return (
     <div>
-
+      {/*datos paciente*/}
       <div className="h-100 d-flex align-items-center justify-content-center">
         <div className='row p-4 rounded border border-dark'>
           <div className='col'>
@@ -96,6 +129,7 @@ const Paciente = () => {
         </div>
       </div>
 
+      {/*linea temporal*/}
 
       <div className="container mt-5">
         <div className="timeline">
@@ -104,7 +138,7 @@ const Paciente = () => {
             {hitos?.map((hito) => {
               return (
                 <OverlayTrigger
-                  trigger={"hover"}
+                  trigger={["hover", "focus"]}
                   placement='top'
                   overlay={renderPopover(hito.fecha, hito.descripcion)}
                 >
@@ -121,6 +155,21 @@ const Paciente = () => {
           </div>
         </div>
       </div>
+
+      <label>Tipo de medicion</label>
+      <select onChange={(e) => setQueryTipoMedicion(e.target.value)}>
+        <option key={"ninguno"} value={''}>Ninguno</option>
+        {dataGrafico && Object.entries(dataGrafico).map(([tipoMedicion]) => 
+          <option key={tipoMedicion} value={tipoMedicion}>{tipoMedicion}</option>)}
+      </select>
+      
+      <label>Tipo de metrica</label>
+      <select onChange={(e) => setQueryTipoMetrica(e.target.value)}>
+        <option key={"ninguno"} value={''}>Ninguno</option>
+        {queryTipoMedicion && dataGrafico && Object.entries(dataGrafico[queryTipoMedicion].metricas[0].valores).map(([tipoMetrica]) => 
+          <option key={tipoMetrica} value={tipoMetrica}>{tipoMetrica}</option>)}
+      </select>
+
     </div>
 
   )
