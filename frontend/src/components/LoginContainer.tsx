@@ -29,7 +29,7 @@ const LoginContainer = () => {
         setPagina("Login")
     })
     return (
-        <div className="d-flex justify-content-center align-items-center  vh-100 bg-light" style={{ minHeight: '85vh' }}>
+        <div className="d-flex justify-content-center align-items-center position-absolute top-50 start-50 translate-middle" style={{ minHeight: '85vh' }}>
             <div>
                 <form onSubmit={handleSubmit(enviar)} className="p-4 rounded border border-dark" style={{ backgroundColor: '#f3eded', width: '300px' }}>
                     <div className="mb-5">

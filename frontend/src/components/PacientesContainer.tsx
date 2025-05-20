@@ -29,6 +29,8 @@ const PacientesContainer = () => {
     const obtenerPacientes = async () => {
       try {
         const respuesta = await fetchPacientes();
+        
+        
         setPacientesData(respuesta)
         setListadoPacientes(respuesta)
         let grupos_temp: string[] = []
@@ -74,7 +76,7 @@ const PacientesContainer = () => {
   return (
     <div className="container-fluid mt-4 ">
       <div className="row justify-content-center">
-        <div className="col-md-3 d-flex flex-column gap-3  ">
+        <div className="col-md-3 d-flex flex-column gap-3">
           <label>DNI</label>
           <input type="text" className="form-control" autoComplete="off" placeholder="DNI" onChange={(e) => setQueryDni(e.target.value)} />
           <label>Grupo</label>
