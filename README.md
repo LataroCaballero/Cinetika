@@ -14,6 +14,7 @@ crear archivo "database.sqlite" en directorio database.
 Ejecutar los siguientes comandos
 - php artisan migrate:install
 - php artisan migrate:fresh
+
 Para cargarla con datos de prueba
 - php artisan db:seed
 

@@ -44,7 +44,7 @@ class PacienteController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'nombre_apellido' => 'required|string|max:255',
-            'dni' => 'required|string|unique:pacientes,dni,' . $paciente->id_paciente . ',id_paciente',
+            'dni' => 'required|string|unique:pacientes' . $paciente->id_paciente . ',id_paciente',
             'fecha_nac' => 'required|date',
             'email' => 'nullable|email',
             'telefono' => 'nullable|string',
@@ -62,7 +62,7 @@ class PacienteController extends Controller
     public function destroy(Paciente $paciente): JsonResponse
     {
         $paciente->delete();
-        return response()->json(null, 204);
+        return response()->json("Paciente eliminado correctamente", 204);
     }
 
     public function historialCompleto(Paciente $paciente): JsonResponse

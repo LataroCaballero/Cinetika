@@ -12,9 +12,9 @@ class PacienteFactory extends Factory
             'nombre_apellido' => fake()->name(),
             'dni' => fake()->unique()->numerify('########'),
             'fecha_nac' => fake()->date(),
-            'email' => fake()->unique()->safeEmail(),
-            'telefono' => fake()->phoneNumber(),
-            'grupo' => fake()->randomElement(['A', 'B', 'C', 'D'])
+            'email' => fake()->randomElement([fake()->unique()->safeEmail(),null]),
+            'telefono' => fake()->randomElement([fake()->phoneNumber(),null]),
+            'grupo' => fake()->randomElement(['A', 'B', 'C', 'D', null])
         ];
     }
 } 
