@@ -20,3 +20,9 @@ Para cargarla con datos de prueba
 
 Para ejecutar el servidor
 - php artisan serve
+
+Frontend: 
+dentro de la carpeta frotnend
+- npm install
+para correr servidor
+- npm run dev

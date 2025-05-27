@@ -1,11 +1,11 @@
 import { createContext, useContext, useState } from "react";
-import { AppContextType } from "./Types";
+import type { AppContextType } from "./Types";
 
 
 export const AppContext = createContext<AppContextType | undefined>( undefined)
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [nombrepagina, setPagina] = useState<string>("Login");
+    const [nombrepagina, setPagina] = useState<string>("");
     return (
         <AppContext.Provider value={{ nombrepagina, setPagina }}>
           {children}
