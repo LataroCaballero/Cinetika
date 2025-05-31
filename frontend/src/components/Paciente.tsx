@@ -144,7 +144,8 @@ const Paciente = () => {
         <div className="timeline-inner">
           <div className="timeline-line" />
           {hitos?.map((hito, index) => (
-            <OverlayTrigger
+            <div className='timeline-item-wrapper'>
+              <OverlayTrigger
               trigger={["hover", "focus"]}
               placement="top"
               overlay={renderPopover(formatDate(hito.fecha), hito.descripcion)}
@@ -155,6 +156,9 @@ const Paciente = () => {
                 onClick={() => navigate(`/hito/${hito.id_hito}`)}
               />
             </OverlayTrigger>
+            <label>{formatDate(hito.fecha)}</label>
+            </div>
+            
           ))}
         </div>
       </div>
