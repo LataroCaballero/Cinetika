@@ -15,7 +15,7 @@ type Props = {
   mediciones: { fecha: string, valores: Record<string, number> }[]
 }
 
-const LineChart = (props: Props) => {
+const LineChartPaciente = (props: Props) => {
   const { tipoMetrica, tipoMedicion, mediciones } = props
 
   console.log(props)
@@ -43,4 +43,4 @@ const LineChart = (props: Props) => {
   )
 }
 
-export default LineChart
+export default LineChartPaciente

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { pacientesService } from '../utilities/api';
 import '../assets/styles.css'
 import { OverlayTrigger, Popover } from 'react-bootstrap';
-import LineChart from './LineChart';
+import LineChart from './LineChartPaciente';
 import formatDate from '../utilities/CommonFunctions';
 
 type MedicionesParaGrafico = {
