@@ -5,8 +5,8 @@ import { useEffect, useState } from 'react';
 import { pacientesService } from '../utilities/api';
 import '../assets/styles.css'
 import { OverlayTrigger, Popover } from 'react-bootstrap';
-import LineChart from './LineChart';
-
+import LineChart from './LineChartPaciente';
+import formatDate from '../utilities/CommonFunctions';
 
 type MedicionesParaGrafico = {
   [tipo_medicion: string]: {
@@ -112,66 +112,66 @@ const Paciente = () => {
     <div>
       {/*datos paciente*/}
 
-      <div className='row'>
-        <div className="h-100 d-flex align-items-center justify-content-center">
-          <div className='row p-4 rounded border border-dark'>
-            <div className='col'>
-              <div className="d-flex justify-content-between mb-2">
-                <p className="mb-0 fw-bold">Nombre: {nombre_apellido}</p>
-              </div>
-              <div className="d-flex justify-content-between mb-2">
-                <p className="mb-0">Grupo: {grupo}</p>
-              </div>
-              <div className="d-flex justify-content-between mb-2">
-                <p className="mb-0">Dni: {dni}</p>
-              </div>
-              <div className="d-flex justify-content-between">
-                <p className="mb-0">Edad: {edad}</p>
-              </div>
+
+      <div className="h-100 d-flex align-items-center justify-content-center m-3">
+        <div className='row p-4 rounded border border-dark'>
+          <div className='col'>
+            <div className="d-flex justify-content-between mb-2">
+              <p className="mb-0 fw-bold">Nombre: {nombre_apellido}</p>
             </div>
-            <div className='col'>
-              <p className="mb-0">Telefono: {telefono}</p>
-              <p className="mb-0">Email: {email}</p>
+            <div className="d-flex justify-content-between mb-2">
+              <p className="mb-0">Grupo: {grupo}</p>
             </div>
+            <div className="d-flex justify-content-between mb-2">
+              <p className="mb-0">Dni: {dni}</p>
+            </div>
+            <div className="d-flex justify-content-between">
+              <p className="mb-0">Edad: {edad}</p>
+            </div>
+          </div>
+          <div className='col'>
+            <p className="mb-0">Telefono: {telefono}</p>
+            <p className="mb-0">Email: {email}</p>
           </div>
         </div>
       </div>
+
 
 
       {/*linea temporal*/}
-      <div className='row'>
-        <div className="container mt-5">
-          <div className="timeline">
-            <div className="timeline-row">
 
-              {hitos?.map((hito, index) => {
-                return (
-                  <OverlayTrigger
-                    trigger={["hover", "focus"]}
-                    placement='top'
-                    overlay={renderPopover(hito.fecha, hito.descripcion)}
-                    key={index}
-                  >
-                    <div className="timeline-event" data-toggle="popover" title={hito.fecha} data-content={hito.descripcion} onClick={() => navigate(`/hito/${hito.id_hito}`)}>
-                      <div className="timeline-marker"></div>
-                    </div>
-
-                  </OverlayTrigger>
-
-                )
-
-              })}
-
+      <div className="timeline-outer d-flex justify-content-center">
+        <div className="timeline-inner">
+          <div className="timeline-line" />
+          {hitos?.map((hito, index) => (
+            <div className='timeline-item-wrapper'>
+              <OverlayTrigger
+              trigger={["hover", "focus"]}
+              placement="top"
+              overlay={renderPopover(formatDate(hito.fecha), hito.descripcion)}
+              key={index}
+            >
+              <div
+                className="timeline-item"
+                onClick={() => navigate(`/hito/${hito.id_hito}`)}
+              />
+            </OverlayTrigger>
+            <label>{formatDate(hito.fecha)}</label>
             </div>
-          </div>
+            
+          ))}
         </div>
       </div>
 
 
-      {/*query grafica*/}
-      <div className='row d-flex justify-content-center'>
 
-        <div className='col-md-3 d-flex flex-column '>
+
+
+
+      {/*query grafica*/}
+      <div className='d-flex justify-content-center m-2'>
+
+        <div className='col-md-3 d-flex flex-column m-1'>
           <label className='form-label'>Tipo de medicion</label>
           <select onChange={(e) => handleQueryMedicon(e.target.value)}>
             <option key={"ninguno"} value={''}>Ninguno</option>
@@ -181,7 +181,7 @@ const Paciente = () => {
         </div>
 
 
-        <div className='col-md-3 d-flex flex-column'>
+        <div className='col-md-3 d-flex flex-column m-1'>
           <label className='form-label'>Tipo de metrica</label>
           <select onChange={(e) => setQueryTipoMetrica(e.target.value)}>
             <option key={"ninguno"} value={''}>Ninguno</option>
@@ -190,13 +190,14 @@ const Paciente = () => {
           </select>
         </div>
       </div>
+
       {/*grafica*/}
       <div className='container d-flex justify-content-center align-items-center' style={{ width: '800px', maxWidth: '100%', height: '400px' }}>
         {(queryTipoMedicion && queryTipoMetrica && dataGrafico) ?
           <LineChart tipoMedicion={queryTipoMedicion} tipoMetrica={queryTipoMetrica} mediciones={dataGrafico[queryTipoMedicion].metricas} />
           : <div className="d-flex justify-content-center align-items-center h-100 w-100">
             <label>Ingresar tipo de medición y tipo de metrica</label>
-            </div>
+          </div>
         }
       </div>
 
