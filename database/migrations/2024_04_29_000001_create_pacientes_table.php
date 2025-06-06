@@ -15,7 +15,7 @@ return new class extends Migration
             $table->date('fecha_nac');
             $table->string('email')->nullable();
             $table->string('telefono')->nullable();
-            $table->string('grupo');
+            $table->string('grupo')->nullable();
             $table->timestamps();
         });
     }

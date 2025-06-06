@@ -21,6 +21,11 @@ class Medicion extends Model
         'ruta_archivo_medicion'
     ];
 
+    protected $hidden = ['ruta_archivo_medicion',
+                        'created_at',
+                        'updated_at'];
+
+    protected $appends = ['contenido_archivo_medicion'];
     protected $casts = [
         'fecha' => 'date',
     ];
@@ -30,16 +35,17 @@ class Medicion extends Model
         return $this->belongsTo(Hito::class, 'id_hito');
     }
 
-    public function show(): array{
+    public function getContenidoArchivoMedicionAttribute(): ?array{
         $reader = new Csv();
         $reader->setDelimiter(',');
         $reader->setEnclosure('"');
-        $spreadsheet = $reader->load($this->ruta_archivo_medicion);
-        $data = [
-            $this->fecha,
-            $this->tipo_medicion,
-            $spreadsheet->getActiveSheet()->toArray()
-        ];
-        return $data;
+        try{
+            $spreadsheet = $reader->load($this->ruta_archivo_medicion);
+            $rows = $spreadsheet->getActiveSheet()->toArray();
+            return $rows;
+        }
+        catch(\TypeError $e){
+            return null;
+        }
     }
 } 

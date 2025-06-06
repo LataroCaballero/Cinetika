@@ -24,7 +24,7 @@ class PacienteController extends Controller
             'fecha_nac' => 'required|date',
             'email' => 'nullable|email',
             'telefono' => 'nullable|string',
-            'grupo' => 'required|string'
+            'grupo' => 'nullable|string'
         ]);
 
         if ($validator->fails()) {

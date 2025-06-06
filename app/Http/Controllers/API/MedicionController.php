@@ -102,7 +102,7 @@ class MedicionController extends Controller
 
     public function show(Medicion $medicion): JsonResponse
     {
-        return response()->json($medicion->show());
+        return response()->json($medicion);
     }
 
     public function update(Request $request, Medicion $medicion): JsonResponse

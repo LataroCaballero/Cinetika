@@ -21,7 +21,7 @@ class JwtConfig{
     return self::$issueAt; 
     }
     public static function getExpirationTime() {
-    self::$expirationTime=self::$issueAt+3600;
+    self::$expirationTime=self::$issueAt+60;
     return self::$expirationTime; 
     }
 }
