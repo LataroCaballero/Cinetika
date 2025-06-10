@@ -139,29 +139,31 @@ const Paciente = () => {
 
 
       {/*linea temporal*/}
+      <div className='d-flex justify-content-center'>
+        <div className="timeline-outer">
+          <div className="timeline-inner">
+            <div className="timeline-line" />
+            {hitos?.map((hito, index) => (
+              <div className='timeline-item-wrapper'>
+                <OverlayTrigger
+                  trigger={["hover", "focus"]}
+                  placement="top"
+                  overlay={renderPopover(formatDate(hito.fecha), hito.descripcion)}
+                  key={index}
+                >
+                  <div
+                    className="timeline-item"
+                    onClick={() => navigate(`/hito/${hito.id_hito}`)}
+                  />
+                </OverlayTrigger>
+                <label>{formatDate(hito.fecha)}</label>
+              </div>
 
-      <div className="timeline-outer d-flex justify-content-center">
-        <div className="timeline-inner">
-          <div className="timeline-line" />
-          {hitos?.map((hito, index) => (
-            <div className='timeline-item-wrapper'>
-              <OverlayTrigger
-              trigger={["hover", "focus"]}
-              placement="top"
-              overlay={renderPopover(formatDate(hito.fecha), hito.descripcion)}
-              key={index}
-            >
-              <div
-                className="timeline-item"
-                onClick={() => navigate(`/hito/${hito.id_hito}`)}
-              />
-            </OverlayTrigger>
-            <label>{formatDate(hito.fecha)}</label>
-            </div>
-            
-          ))}
+            ))}
+          </div>
         </div>
       </div>
+
 
 
 

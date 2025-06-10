@@ -89,7 +89,7 @@ const HitoContainer = () => {
         let metrica_a_cambiar = QueriesElegidas[queryIndex].metricaName;
         let indice = tempMetricasData.map(metrica => metrica.name).indexOf(metrica_a_cambiar);
         if (indice !== -1) tempMetricasData.splice(indice, 1);
-        
+
         if (metricaIndex !== -1) tempMetricasData.push(MetricasProcesadas[metricaIndex]);
 
 
@@ -154,33 +154,38 @@ const HitoContainer = () => {
     return (
         <div>
             <h1>{hito.titulo}</h1>
-            <div className="row">
-                {QueriesElegidas.map((query, index) => (
-                    <div key={query.id} className='col d-flex flex-column m-1'>
-                        <div className='d-flex flex-column m-1'>
-                            <label className='form-label'>Metrica {index + 1}</label>
-                            <select
-                                value={query.metricaIndex}
-                                onChange={(e) => handleQueryMetrica(parseInt(e.target.value), index)}
-                            >
-                                <option value={-1}>Ninguno</option>
-                                {MetricasProcesadas.map((metric, metricaIndex) => (
-                                    <option key={metricaIndex} value={metricaIndex}>
-                                        {metric.name}
-                                    </option>
-                                ))}
-                            </select>
+            <div className="container">
+                <div className="row">
+                    {QueriesElegidas.map((query, index) => (
+                        <div key={query.id} className='col d-flex flex-column m-1'>
+                            <div className='d-flex flex-column m-1'>
+                                <label className='form-label'>Metrica {index + 1}</label>
+                                <select
+                                    value={query.metricaIndex}
+                                    onChange={(e) => handleQueryMetrica(parseInt(e.target.value), index)}
+                                >
+                                    <option value={-1}>Ninguno</option>
+                                    {MetricasProcesadas.map((metric, metricaIndex) => (
+                                        <option key={metricaIndex} value={metricaIndex}>
+                                            {metric.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <BarChart
+                                key={`chart-${query.id}-${query.metricaIndex}`}
+                                tipoMetrica={query.metricaName}
+                                promedio={query.promedio}
+                            />
                         </div>
-                        <BarChart
-                            key={`chart-${query.id}-${query.metricaIndex}`}
-                            tipoMetrica={query.metricaName}
-                            promedio={query.promedio}
-                        />
-                    </div>
 
-                ))}
+                    ))}
+                </div>
             </div>
-            <LineChartHitos MetricasData={metricasParaGrafica} />
+
+            <div className='container d-flex justify-content-center align-items-center' style={{ width: '800px', maxWidth: '100%', height: '400px' }}>
+                <LineChartHitos MetricasData={metricasParaGrafica} />
+            </div>
         </div>
     );
 };
